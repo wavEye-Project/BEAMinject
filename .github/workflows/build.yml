@@ -20,13 +20,11 @@ jobs:
     - name: Get dependencies
       run: |
         pip install -r requirements.txt
-        pip install nuitka requests
-        py .github/workflows/get_upx.py -nf win64 .
 
     - name: Inject build string
       run: |
-        py ./.github/workflows/inject_buildstr.py app.py
-        py ./.github/workflows/inject_buildstr.py BEAMinjector.py
+        py .github/workflows/inject_buildstr.py app.py
+        py .github/workflows/inject_buildstr.py BEAMinjector.py
 
     - uses: Nuitka/Nuitka-Action@main
       with:
@@ -40,10 +38,14 @@ jobs:
         script-name: app.py
         onefile: true
 
-    - name: Rename files
+    - name: Pack files with UPX
       run: |
+        pip install requests
+        py .github/workflows/get_upx.py -nf win64 .
         mv build/BEAMinjector.exe BEAMinject.exe
+        ./upx BEAMinject.exe
         mv build/app.exe BEAMinject_GUI.exe
+        ./upx BEAMinject_GUI.exe
 
     - name: Upload binary
       uses: actions/upload-artifact@v4
