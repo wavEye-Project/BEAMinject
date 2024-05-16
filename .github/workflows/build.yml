@@ -42,8 +42,8 @@ jobs:
 
     - name: Rename files
       run: |
-        mv dist/BEAMinjector.exe BEAMinject.exe
-        mv dist/app.exe BEAMinject_GUI.exe
+        mv build/BEAMinjector.exe BEAMinject.exe
+        mv build/app.exe BEAMinject_GUI.exe
 
     - name: Upload binary
       uses: actions/upload-artifact@v4
