@@ -44,9 +44,9 @@ jobs:
         pip install requests
         py .github/workflows/get_upx.py -nf win64 .
         mv build/BEAMinjector.exe BEAMinject.exe
-        ./upx BEAMinject.exe
+        ./upx --brute BEAMinject.exe
         mv build/app.exe BEAMinject_GUI.exe
-        ./upx BEAMinject_GUI.exe
+        ./upx --brute BEAMinject_GUI.exe
 
     - name: Upload binary
       uses: actions/upload-artifact@v4
