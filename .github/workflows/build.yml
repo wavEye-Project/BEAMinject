@@ -37,6 +37,7 @@ jobs:
         nuitka-version: main
         script-name: app.py
         onefile: true
+        enable-plugins: tk-inter
 
     - name: Pack files with UPX
       run: |
