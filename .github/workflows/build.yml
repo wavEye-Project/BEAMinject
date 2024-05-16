@@ -19,9 +19,9 @@ jobs:
 
     - name: Get dependencies
       run: |
-        py -m pip install -r requirements.txt
-        py -m pip install nuitka requests
-        py .github/workflows/get_upx.py -nf win64 .
+        py -3.11 -m pip install -r requirements.txt
+        py -3.11 -m pip install nuitka requests
+        py -3.11 .github/workflows/get_upx.py -nf win64 .
 
     - name: Build binary
       run: |
@@ -29,9 +29,9 @@ jobs:
         py ./.github/workflows/inject_buildstr.py app.py
         py ./.github/workflows/inject_buildstr.py BEAMinjector.py
 
-        py -m nuitka --onefile BEAMinjector.py
+        py -3.11 -m nuitka --onefile BEAMinjector.py
         mv dist/BEAMinjector.exe BEAMinject.exe
-        py -m nuitka --onefile app.py
+        py -3.11 -m nuitka --onefile app.py
         mv dist/app.exe BEAMinject_GUI.exe
 
     - name: Upload binary
