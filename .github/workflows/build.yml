@@ -12,10 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up latest Python
+    - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'
+        python-version: '3.11'
 
     - name: Compile Pyinstaller & install
       run: |
@@ -28,7 +28,7 @@ jobs:
     - name: Get dependencies
       run: |
         pip install -r requirements.txt
-        pip install requests
+        pip install requests nuitka
         py .github/workflows/get_upx.py -nf win64 .
 
     - name: Build binary
@@ -37,9 +37,9 @@ jobs:
         py ./.github/workflows/inject_buildstr.py app.py
         py ./.github/workflows/inject_buildstr.py BEAMinjector.py
 
-        py -m PyInstaller --add-data="getmc.ps1:." --noconsole --onefile BEAMinjector.py
+        py -m nuitka --onefile BEAMinjector.py
         mv dist/BEAMinjector.exe BEAMinject.exe
-        py -m PyInstaller --add-data="getmc.ps1:." --noconsole --onefile app.py
+        py -m nuitka --onefile app.py
         mv dist/app.exe BEAMinject_GUI.exe
 
     - name: Upload binary
