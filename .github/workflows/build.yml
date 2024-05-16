@@ -28,7 +28,8 @@ jobs:
     - name: Get dependencies
       run: |
         pip install -r requirements.txt
-        pip install requests nuitka
+        pip install nuitka
+        pip install requests
         py .github/workflows/get_upx.py -nf win64 .
 
     - name: Build binary
