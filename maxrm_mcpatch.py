@@ -2,7 +2,7 @@
 Hex patterns for Minecraft patching
 by Max-RM
 """
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 import re
 IMAGE_FILE_MACHINE_AMD64 = 0x8664 # x64
@@ -58,47 +58,47 @@ def patch_module(architecture: str, dll_data: bytes) -> bytes:
     if architecture == "amd64":
         dll_data = re.sub(
             _c_h(r"(39 9E C8 00 00 00) 0F 95 C1 (88 0F 8B)"),
-            _c_h(r"\1 B1 00 90 \2"),
+            _c_h(r"\g<1> B1 00 90 \g<2>"),
             dll_data
         )
         dll_data = re.sub(
             _c_h(r"(FF EB 05) 8A 49 61 (88 0A 8B CB E8)"),
-            _c_h(r"\1 B1 00 90 \2"),
+            _c_h(r"\g<1> B1 00 90 \g<2>"),
             dll_data
         )
     elif architecture == "i386":
         dll_data = re.sub(
             _c_h(r"(FF EB 08 39 77 74) 0F 95 C1 (88 08 8B)"),
-            _c_h(r"\1 B1 00 90 \2"),
+            _c_h(r"\g<1> B1 00 90 \g<2>"),
             dll_data
         )
         dll_data = re.sub(
             _c_h(r"(FF EB 08 8B 4D 08) 8A 49 31 (88 08 8B)"),
-            _c_h(r"\1 B1 00 90 \2"),
+            _c_h(r"\g<1> B1 00 90 \g<2>"),
             dll_data
         )
 
     # All ARM patches are experimental
     elif architecture == "arm":
         dll_data = re.sub(
-            _c_h(r"(05 E0 33 .. 0B) B1 01 (23 00 E0 00 23 2B 70 20 46)"),
-            _c_h(r"\1 B1 00 \2"),
+            _c_h(r"(05 E0 .3 .. 0B) B1 01 (23 00 E0 00 23 2B 70 20 46)"),
+            _c_h(r"\g<1> B1 00 \g<2>"),
             dll_data
         )
         dll_data = re.sub(
             _c_h(r"(02 E0) 90 F8 .. 30 (0B 70 20 46)"),
-            _c_h(r"02 E0 4F F0 00 03 0B 70 20 46"), # having issues with \1 and \2, hardcode for now
+            _c_h(r"\g<1> 4F F0 00 03 \g<2>"),
             dll_data
         )
     elif architecture == "arm64":
         dll_data = re.sub(
             _c_h(r"(FE 97 05 00 00 14 A8 .A 40 B9 1F 01 00 71) E9 07 9F 1A (89 02 00 39 E0 03 13 2A)"),
-            _c_h(r"\1 09 00 80 52 \2"),
+            _c_h(r"\g<1> 09 00 80 52 \g<2>"),
             dll_data
         )
         dll_data = re.sub(
             _c_h(r"(FC 97 03 00 00 14 08) .4 41 39 (28 00 00 39 E0 03 13 2A)"),
-            _c_h(r"\1 00 80 52 \2"),
+            _c_h(r"\g<1> 00 80 52 \g<2>"),
             dll_data,
             1 # Only match once
         )
