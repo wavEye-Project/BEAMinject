@@ -1,5 +1,5 @@
 <div align=center>
-    <h1>BEAMinject</h1>Memory injection unlocker for Minecraft: Windows 10 Edition</p>
+    <h1>BEAMinject</h1>Memory injection unlocker for Minecraft: Windows 10 Edition <i>(wavEye's version)</i></p>
 </div>
 
 -----
@@ -14,7 +14,7 @@ BEAMinject comes in 2 versions:
 We recommend trying BEAMinject first, and if you have issues, you can move to the GUI version for debugging.
 
 ## :inbox_tray: Downloads
-You can download the latest nightly release [here](https://nightly.link/OpenM-Project/BEAMinject/workflows/build/main/BEAMinject_nightly.zip).
+You can download the latest nightly release [here](https://nightly.link/wavEye-Project/BEAMinject/workflows/build/main/BEAMinject_nightly.zip).
 
 ## :rotating_light: About AV detections
 Some poorly designed AVs *(namely Microsoft, Avast and AVG)* might detect our packed Python executables as a trojan.
@@ -30,9 +30,7 @@ Read support status [here](ARMstatus.md).
 This only works on Windows,
 and won't be ported to other platforms *(for obvious reasons)*.
 
-For all support needed, you can open an issue!
-And you can join our [Discord](https://dsc.gg/openm "OpenM Community") server or ask in [Reddit](https://openmcommunity.reddit.com/)
-for further support needed.
+For all support needed, you can open an issue.
 
 ## :page_with_curl: License
 All code and assets are licensed under GNU AGPLv3.

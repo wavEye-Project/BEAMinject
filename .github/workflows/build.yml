@@ -26,18 +26,23 @@ jobs:
         py .github/workflows/inject_buildstr.py app.py
         py .github/workflows/inject_buildstr.py BEAMinjector.py
 
-    - uses: Nuitka/Nuitka-Action@main
+    - name: Build BEAMinject
+      uses: Nuitka/Nuitka-Action@main
       with:
         nuitka-version: main
         script-name: BEAMinjector.py
         onefile: true
+        disable-console: true
+        include-data-file: getmc.ps1=getmc.ps1
 
-    - uses: Nuitka/Nuitka-Action@main
+    - name: Build BEAMinject (GUI version)
+      uses: Nuitka/Nuitka-Action@main
       with:
         nuitka-version: main
         script-name: app.py
         onefile: true
         enable-plugins: tk-inter
+        include-data-file: getmc.ps1=getmc.ps1
 
     - name: Pack files with UPX
       run: |
