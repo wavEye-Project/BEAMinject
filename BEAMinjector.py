@@ -56,7 +56,7 @@ def main_():
         "Bypass", "-File", getres("getmc.ps1")])
     try:
         mcinstall = json.loads(mcinstall)
-    except json.JSONDecodeError:
+    except TypeError:
         write_logs("\n! Couldn't find Minecraft\n")
         return quitfunc(1)
     write_logs(f"found version {mcinstall[0]}!\n")
@@ -123,7 +123,7 @@ def main():
     try:
         main_()
     except Exception as ex:
-        write_logs(f"! Uncaught error of type {type(ex).__name__} \
+        write_logs(f"\n! Uncaught error of type {type(ex).__name__} \
 occured: {getattr(ex, 'message', str(ex))}")
         return quitfunc(1)
 

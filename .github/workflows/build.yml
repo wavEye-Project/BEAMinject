@@ -33,7 +33,8 @@ jobs:
         script-name: BEAMinjector.py
         onefile: true
         disable-console: true
-        include-data-file: getmc.ps1=getmc.ps1
+        include-data-files: |
+          getmc.ps1=getmc.ps1
 
     - name: Build BEAMinject (GUI version)
       uses: Nuitka/Nuitka-Action@main
@@ -42,7 +43,8 @@ jobs:
         script-name: app.py
         onefile: true
         enable-plugins: tk-inter
-        include-data-file: getmc.ps1=getmc.ps1
+        include-data-files: |
+          getmc.ps1=getmc.ps1
 
     - name: Pack files with UPX
       run: |
