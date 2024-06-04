@@ -5,7 +5,7 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 import os
 import sys
@@ -40,7 +40,7 @@ def getres(relative_path):
     try:
         base_path = sys._MEIPASS
     except AttributeError:
-        base_path = os.path.abspath(".")
+        base_path = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(base_path, relative_path)
 
 def runcmd(args):
