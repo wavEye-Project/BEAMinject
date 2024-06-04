@@ -54,7 +54,7 @@ def main_():
         mcinstall = runcmd(f'powershell.exe -ExecutionPolicy Bypass -File "{getres("getmc.ps1")}"')
     except subprocess.CalledProcessError as ex:
         write_logs("\n! Call to system failed\n")
-        write_logs("! {ex}\n")
+        write_logs(f"! {ex}\n")
         return quitfunc(1)
     try:
         mcinstall = json.loads(mcinstall)
