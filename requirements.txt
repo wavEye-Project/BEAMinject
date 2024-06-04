@@ -1,2 +1,2 @@
-git+https://github.com/OpenM-Project/librosewater.git
+git+https://github.com/wavEye-Project/librosewater.git
 customtkinter

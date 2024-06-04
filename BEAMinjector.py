@@ -5,7 +5,7 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.0"
+__version__ = "0.4.1"
 
 import os
 import sys
@@ -14,6 +14,7 @@ import ctypes
 import subprocess
 import librosewater
 import librosewater.module
+import librosewater.process
 import maxrm_mcpatch
 
 # Modify values for imported usage
@@ -52,40 +53,33 @@ def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
     write_logs("= Getting Minecraft install... ")
-    mcinstall = runcmd(["powershell.exe", "-ExecutionPolicy",
-        "Bypass", "-File", f'"{getres("getmc.ps1")}"'])
+    mcinstall = runcmd(f'powershell.exe -ExecutionPolicy Bypass -File "{getres("getmc.ps1")}"')
     try:
         mcinstall = json.loads(mcinstall)
     except TypeError:
         write_logs("\n! Couldn't find Minecraft\n")
-        write_logs(f"\n! {mcinstall}")
         return quitfunc(1)
     write_logs(f"found version {mcinstall[0]}!\n")
 
     # Wait for Minecraft
     if launchmc:
         write_logs("* Launching Minecraft\n")
-        runcmd(["powershell.exe", f'explorer.exe shell:AppsFolder\\{mcinstall[1]}!App'])
+        runcmd(f'powershell.exe explorer.exe shell:AppsFolder\\{mcinstall[1]}!App')
     write_logs("= Waiting for Minecraft to launch... ")
     mcapp = os.path.basename(mcinstall[2])
-    PID = None
-    while not PID:
-        output = runcmd(
-            ["tasklist", "/FI", f"IMAGENAME eq {mcapp}", "/FO", "CSV"])
-        if not output:
-            continue
-        lines = output.splitlines()
-        if len(lines) > 1 and mcapp.encode() in lines[1]:
-            PID = int(lines[1].split(b",")[1][1:-1])
+    try:
+        PID, process_handle = librosewater.process.wait_for_process(mcapp)
+    except librosewater.exceptions.QueryError:
+        write_logs(f"! Couldn't wait for Minecraft (likely OS error)\n")
+        return quitfunc(1)
     write_logs(f"found at PID {PID}!\n")
-    process_handle = ctypes.windll.kernel32.OpenProcess(librosewater.PROCESS_ALL_ACCESS, False, PID)
 
     # Get module address
     write_logs("= Waiting for module... ")
     try:
         module_address, _ = librosewater.module.wait_for_module(process_handle, "Windows.ApplicationModel.Store.dll")
-    except librosewater.exceptions.QueryError as ex:
-        write_logs(f"! Couldn't wait for module, did Minecraft close?\n")
+    except librosewater.exceptions.QueryError:
+        write_logs(f"\n! Couldn't wait for module, did Minecraft close?\n")
         return cleanquit(process_handle, quitfunc, 1)
     write_logs(f"found at {hex(module_address)}!\n")
 
