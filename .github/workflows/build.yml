@@ -27,32 +27,18 @@ jobs:
         py .github/workflows/inject_buildstr.py BEAMinjector.py
 
     - name: Build BEAMinject
-      uses: Nuitka/Nuitka-Action@main
-      with:
-        nuitka-version: main
-        script-name: BEAMinjector.py
-        onefile: true
-        disable-console: true
-        include-data-files: |
-          getmc.ps1=getmc.ps1
-
-    - name: Build BEAMinject (GUI version)
-      uses: Nuitka/Nuitka-Action@main
-      with:
-        nuitka-version: main
-        script-name: app.py
-        onefile: true
-        enable-plugins: tk-inter
-        include-data-files: |
-          getmc.ps1=getmc.ps1
+      run: |
+        pip install nuitka
+        py -m nuitka --include-data-file=getmc.ps1=getmc.ps1 --onefile --enable-plugin=tk-inter --disable-console app.py
+        py -m nuitka --include-data-file=getmc.ps1=getmc.ps1 --onefile --disable-console BEAMinjector.py
 
     - name: Pack files with UPX
       run: |
         pip install requests
         py .github/workflows/get_upx.py -nf win64 .
-        mv build/BEAMinjector.exe BEAMinject.exe
+        mv BEAMinjector.exe BEAMinject.exe
         ./upx --brute BEAMinject.exe
-        mv build/app.exe BEAMinject_GUI.exe
+        mv app.exe BEAMinject_GUI.exe
         ./upx --brute BEAMinject_GUI.exe
 
     - name: Upload binary
