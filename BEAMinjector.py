@@ -44,16 +44,18 @@ def getres(relative_path):
     return os.path.join(base_path, relative_path)
 
 def runcmd(args):
-    try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT)
-    except subprocess.CalledProcessError:
-        pass
+    return subprocess.check_output(args, stderr=subprocess.STDOUT)
 
 def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
     write_logs("= Getting Minecraft install... ")
-    mcinstall = runcmd(f'powershell.exe -ExecutionPolicy Bypass -File "{getres("getmc.ps1")}"')
+    try:
+        mcinstall = runcmd(f'powershell.exe -ExecutionPolicy Bypass -File "{getres("getmc.ps1")}"')
+    except subprocess.CalledProcessError as ex:
+        write_logs("\n! Call to system failed\n")
+        write_logs("! {ex}\n")
+        return quitfunc(1)
     try:
         mcinstall = json.loads(mcinstall)
     except TypeError:
