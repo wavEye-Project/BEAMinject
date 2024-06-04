@@ -53,11 +53,12 @@ def main_():
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
     write_logs("= Getting Minecraft install... ")
     mcinstall = runcmd(["powershell.exe", "-ExecutionPolicy",
-        "Bypass", "-File", getres("getmc.ps1")])
+        "Bypass", "-File", f'"{getres("getmc.ps1")}"'])
     try:
         mcinstall = json.loads(mcinstall)
     except TypeError:
         write_logs("\n! Couldn't find Minecraft\n")
+        write_logs(f"\n! {mcinstall}")
         return quitfunc(1)
     write_logs(f"found version {mcinstall[0]}!\n")
 
