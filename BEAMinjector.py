@@ -5,7 +5,7 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.2"
+__version__ = "0.4.3"
 
 import os
 import sys
@@ -36,13 +36,6 @@ quitfunc = sys.exit
 # Identifier for inject_buildstr.py
 buildstr = "custombuild"
 
-def getres(relative_path):
-    try:
-        base_path = sys._MEIPASS
-    except AttributeError:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base_path, relative_path)
-
 def runcmd(args):
     return subprocess.check_output(args, stderr=subprocess.STDOUT)
 
@@ -50,11 +43,16 @@ def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
     write_logs("= Getting Minecraft install... ")
+    payload = 'powershell.exe -Command "Get-AppxPackage -name Microsoft.MinecraftUWP | ' \
+        'ForEach-Object { @($_.Version, $_.PackageFamilyName, ' \
+        '(Join-Path $_.InstallLocation (Get-AppxPackageManifest $_).' \
+        'Package.Applications.Application.Executable)) ' \
+        '| ConvertTo-Json }"'
+
     try:
-        mcinstall = runcmd(f'powershell.exe -ExecutionPolicy Bypass -File "{getres("getmc.ps1")}"')
+        mcinstall = runcmd(payload)
     except subprocess.CalledProcessError as ex:
         write_logs("\n! Call to system failed\n")
-        write_logs(f"! {ex}\n")
         return quitfunc(1)
     try:
         mcinstall = json.loads(mcinstall)

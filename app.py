@@ -2,15 +2,15 @@
 BEAMinject GUI app
 
 This code is experimental, check out our GitHub repository:
-https://github.com/OpenM-Project/BEAMinject for more info
+https://github.com/wavEye-Project/BEAMinject for more info
 """
-__version__ = "0.4.2"
+import BEAMinjector
+__version__ = BEAMinjector.__version__
 
 import sys
 import threading
 import tkinter.font
 import customtkinter
-import BEAMinjector
 
 # Identifier for inject_buildstr.py
 buildstr = "custombuild"
