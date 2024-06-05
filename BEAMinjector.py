@@ -5,7 +5,7 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.4"
+__version__ = "0.4.5"
 
 import os
 import sys
@@ -42,7 +42,7 @@ def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
     write_logs("= Getting Minecraft install... ")
-    payload = 'powershell.exe -Command "Get-AppxPackage -name Microsoft.MinecraftUWP | ' \
+    payload = 'powershell.exe -c "Get-AppxPackage -name Microsoft.MinecraftUWP | ' \
         'ForEach-Object { @($_.Version, $_.PackageFamilyName, ' \
         '(Join-Path $_.InstallLocation (Get-AppxPackageManifest $_).' \
         'Package.Applications.Application.Executable)) ' \
@@ -97,6 +97,11 @@ def main_():
         write_logs("\n! Couldn't find patches for platform, may be unsupported")
         return cleanquit(process_handle, 1)
     write_logs(f"got architecture {arch}... ")
+
+    # The reason why we don't check error here is because
+    # it's guaranteed to be one of the supported architectures
+    # by the patches. The check is there for external usage of
+    # the Max-RM hex patches.
     new_data = maxrm_mcpatch.patch_module(arch, data[1])
     write_logs("done!\n")
 
