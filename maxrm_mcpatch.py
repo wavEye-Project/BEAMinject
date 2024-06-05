@@ -26,12 +26,12 @@ def check_machine(filename: str):
     with open(filename, "rb") as file:
         file.seek(0x3C)
         # COFF header offset
-        COFF_offset = int.from_bytes(file.read(4), byteorder="little")
+        COFF_offset = int.from_bytes(file.read(4), "little")
         file.seek(COFF_offset)
         # Skip signature
         file.read(4)
         # Machine header
-        machine = int.from_bytes(file.read(2), byteorder="little")
+        machine = int.from_bytes(file.read(2), "little")
         if machine == IMAGE_FILE_MACHINE_AMD64:
             return "amd64"
         elif machine == IMAGE_FILE_MACHINE_I386:
