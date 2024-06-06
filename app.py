@@ -45,6 +45,7 @@ def start_inject():
     logwidget.pack(padx=8, pady=8)
     titlelabel.set("Injecting...")
     BEAMinjector.launchmc = launchmc.get()
+    BEAMinjector.preview_version = patchpreview.get()
     BEAMinjector.write_logs = lambda x: write_logs(logwidget, x)
     BEAMinjector.quitfunc = quit_button
     thread = threading.Thread(target=BEAMinjector.main, args=())
@@ -85,8 +86,15 @@ startbutton.configure(text="Let's go!", width=180, height=60)
 launchmc = customtkinter.IntVar()
 launchmc.set(1)
 launchswitch = customtkinter.CTkSwitch(master=frame, variable=launchmc)
-launchswitch.pack(pady=20)
+launchswitch.pack(pady=10)
 launchswitch.configure(text="Launch Minecraft")
+
+# Beta Minecraft
+patchpreview = customtkinter.IntVar()
+patchpreview.set(0)
+previewswitch = customtkinter.CTkSwitch(master=frame, variable=patchpreview)
+previewswitch.pack(pady=10)
+previewswitch.configure(text="Patch Minecraft Preview")
 
 # Theme Switch
 currenttheme = customtkinter.IntVar()

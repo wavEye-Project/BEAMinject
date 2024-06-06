@@ -5,7 +5,7 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.5"
+__version__ = "0.4.6"
 
 import os
 import sys
@@ -28,26 +28,31 @@ def cleanquit(process_handle, arg):
     ctypes.windll.kernel32.CloseHandle(process_handle)
     return quitfunc(arg)
 quitfunc = sys.exit
+preview_version = False
 
 # Identifier for inject_buildstr.py
 buildstr = "custombuild"
 
 def runcmd(args):
     try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT)
+        return subprocess.check_output(args, stderr=subprocess.STDOUT, errors="replace")
     except subprocess.CalledProcessError:
         pass
 
 def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
-    write_logs("= Getting Minecraft install... ")
-    payload = 'powershell.exe -c "Get-AppxPackage -name Microsoft.MinecraftUWP | ' \
+
+    if preview_version:
+        package_name = "Microsoft.MinecraftWindowsBeta"
+    else:
+        package_name = "Microsoft.MinecraftUWP"
+    payload = f'powershell.exe -c "Get-AppxPackage -name {package_name} | ' \
         'ForEach-Object { @($_.Version, $_.PackageFamilyName, ' \
         '(Join-Path $_.InstallLocation (Get-AppxPackageManifest $_).' \
         'Package.Applications.Application.Executable)) ' \
         '| ConvertTo-Json }"'
-
+    write_logs(f"= Getting Minecraft{' Preview' if preview_version else ''} install... ")
     try:
         mcinstall = json.loads(runcmd(payload))
     except TypeError:
@@ -121,8 +126,10 @@ def main():
         main_()
     except Exception as ex:
         write_logs(f"\n! Uncaught error of type {type(ex).__name__} \
-occured: {getattr(ex, 'message', str(ex))}")
+occured: {str(ex)}")
         return quitfunc(1)
 
 if __name__ == "__main__":
+    if "--preview" in sys.argv:
+        preview_version = True
     main()
