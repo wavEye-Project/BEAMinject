@@ -34,8 +34,9 @@ preview_version = False
 buildstr = "custombuild"
 
 def runcmd(args):
+    bytearray.decode()
     try:
-        return subprocess.check_output(args, stderr=subprocess.STDOUT, errors="replace")
+        return subprocess.check_output(args, stderr=subprocess.STDOUT, errors="ignore")
     except subprocess.CalledProcessError:
         pass
 
