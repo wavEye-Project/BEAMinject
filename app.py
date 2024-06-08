@@ -113,7 +113,7 @@ themeswitch.configure(text="Light Mode")
 # Build string
 title = customtkinter.CTkLabel(master=frame, justify=customtkinter.RIGHT)
 title.pack(padx=35, side=customtkinter.RIGHT)
-title.configure(text=f"version {__version__}\nbuild {buildstr}")
+title.configure(text=f"version {__version__}\nbuild {buildstr}\n{BEAMinjector.uyghurtext}")
 
 # Start app
 app.mainloop()

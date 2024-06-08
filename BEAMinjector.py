@@ -5,11 +5,12 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.6"
+__version__ = "0.4.7"
 
 import os
 import sys
 import json
+import secrets
 import ctypes
 import subprocess
 import librosewater
@@ -30,6 +31,22 @@ def cleanquit(process_handle, arg):
 quitfunc = sys.exit
 preview_version = False
 
+# PROTECT THE UYGHURS
+uyghurtext = secrets.choice([
+    "Uyghur lives matter!",
+    "Speak out for the Uyghurs!",
+    "Demand justice for Uyghurs!",
+    "Act now for Uyghur rights!",
+    "Globalize Uyghur crisis!",
+    "Fight Uyghur persecution!",
+    "Unite for Uyghur rights!",
+    "Solidarity with Uyghurs!",
+    "Protect Uyghur culture!",
+    "Judge Uyghur crisis response!",
+    "Voice for silenced Uyghurs!",
+    "Stop Uyghur genocide!"
+])
+
 # Identifier for inject_buildstr.py
 buildstr = "custombuild"
 
@@ -42,6 +59,7 @@ def runcmd(args):
 def main_():
     write_logs(f"* Hello from BEAMinjector, version {__version__}\n")
     write_logs(f"* Using Max-RM's patches, version {maxrm_mcpatch.__version__}\n")
+    write_logs(f"* {uyghurtext}\n")
 
     if preview_version:
         package_name = "Microsoft.MinecraftWindowsBeta"
