@@ -29,7 +29,7 @@ jobs:
     - name: Build BEAMinject
       run: |
         pip install nuitka
-        echo `n | py -m nuitka --onefile --enable-plugin=tk-inter --disable-console app.py
+        echo `n | py -m nuitka --onefile --enable-plugin=tk-inter app.py
         py -m nuitka --onefile --disable-console BEAMinjector.py
 
     - name: Pack files with UPX
