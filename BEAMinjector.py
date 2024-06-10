@@ -5,9 +5,10 @@ For usage as a module, check out the
 "# Modify values for imported usage" section
 of the code, and then configure accordingly
 """
-__version__ = "0.4.7"
+__version__ = "0.4.8"
 
 import os
+import io
 import sys
 import json
 import secrets
@@ -150,4 +151,12 @@ occured: {str(ex)}")
 if __name__ == "__main__":
     if "--preview" in sys.argv:
         preview_version = True
+    if "--debugging" in sys.argv:
+        write_logs = io.StringIO().write
+        log_type = None
+        def quitfunc(code): globals().update({'log_type': 16 if code else 64})
+        main()
+        write_logs.__self__.seek(0)
+        ctypes.windll.user32.MessageBoxW(None, write_logs.__self__.read(), f'BEAMinject {__version__}', log_type)
+        sys.exit(1 if log_type == 16 else 0)
     main()
